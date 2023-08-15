@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/reference/test_package.html#special-files
 
 library(testthat)
-library(rpkg.template)
+library(ECOF0)
 
-test_check("rpkg.template")
+test_check("ECOF0")
