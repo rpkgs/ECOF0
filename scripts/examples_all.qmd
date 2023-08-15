@@ -18,27 +18,27 @@ legend(1968, 35, legend = c("OBS", "SIG"), col = c(1, 2), lty = c(1, 1))
 ```{r}
 all_sig = matrix(scan("ALL_ann_1area.dat"), byrow = T, nrow = 158)
 nat_sig = matrix(scan("NAT_ann_1area.dat"), byrow = T, nrow = 59)
-
-matplot(t, t(all_sig), ylim = c(-30, 40), type = "l", lty = 2, xlab = "Year", ylab = "Mean Prep Anomaly (mm)", col = 7)
-par(new = TRUE)
-plot(t, Z@Y, ylim = c(-30, 40), type = "l", xlab = "Year", ylab = "Mean Prep Anomaly (mm)")
-par(new = TRUE)
-plot(t, Z@X, type = "l", ylim = c(-30, 40), xlab = "", ylab = "", col = 2, main = "High latitude precipitation")
 ```
 
+> 绘图展示输入数据
 ```{r}
+par(mfrow = c(1, 1))
 matplot(t, t(all_sig), ylim = c(-30, 40), type = "l", lty = 2, xlab = "Year", ylab = "Mean Prep Anomaly (mm)", col = 7)
+
 par(new = TRUE)
 matplot(t, t(nat_sig), ylim = c(-30, 40), type = "l", lty = 3, xlab = "Year", ylab = "", col = 4)
+
+# 处理后的ALL, Y
 par(new = TRUE)
 plot(t, Z@Y, ylim = c(-30, 40), type = "l", xlab = "Year", ylab = "Mean Prep Anomaly (mm)", lwd = 2)
 par(new = TRUE)
 plot(t, Z@X, type = "l", ylim = c(-30, 40), xlab = "", ylab = "", col = 2, main = "High latitude precipitation", lwd = 2)
-
 ```
 
+> 输出数据
+
 ```{r}
-u = redop(8, 1, 6)
+u = redop(8, 1, 6) # 数据进行降维
 Zr = redECOF(Z, u, 8, 1, timefirst = T)
 
 o1.ols <- ols(Zr@Y, Zr@X, Zr@noise1, Zr@noise2, nsig = 158)
