@@ -3,8 +3,8 @@
 # Main functions
 # This package contains R functions to conduct detection and attribution analysis using three different algorithms under the optimal fingerprint framework. These include:
 # 1.ols(), the Ordinary Least Squares method (Allen and Tett, 1999).
-# 2.tls.A03 (), the Total Least Squares method (Allen and Scott, 2003). Note that the confidence intervals for the scaling factors are obtained using the method provided in the ROF package by Dr. A. Ribes (Ribes, A., 2012)
-# 3.tls.ROF (), the Regularized Optimal Fingerprint method (Ribes et al, 2013a). This function is translated from routines in the ROF package V0.8 coded by Dr. A. Ribes, using SCILAB. (Ribes, A., 2012)
+# 2.tls (), the Total Least Squares method (Allen and Scott, 2003). Note that the confidence intervals for the scaling factors are obtained using the method provided in the ROF package by Dr. A. Ribes (Ribes, A., 2012)
+# 3.tls_rof (), the Regularized Optimal Fingerprint method (Ribes et al, 2013a). This function is translated from routines in the ROF package V0.8 coded by Dr. A. Ribes, using SCILAB. (Ribes, A., 2012)
 
 Creg <- function(Cn) {
   # regularization for noise structure

@@ -12,16 +12,26 @@
 #        rcc.flg -- flag to simulate empirical null distribution for residual test stat, default as TRUE
 # sample command lines:
 # x<-readin('obs_sig.txt','noise1.txt','noise2.txt')
-# o1<-tls.ROF(x@Y,x@X,x@noise1,x@noise2,df2=180,REG=TRUE,nsig=5,rcc.flg=T)
+# o1<-tls_rof(x@Y,x@X,x@noise1,x@noise2,df2=180,REG=TRUE,nsig=5,rcc.flg=T)
 
 #' @export
-tls.ROF <- function(Y, X, noise1, noise2, nsig, nsim.CI = 1000, nsim.rcc = 1000, REG = TRUE, df2 = NULL, plev = .9, rcc.flg = TRUE, seed=NULL) {
+tls_rof.ECOF <- function(obj, plev = .9, Proj = NULL, ...) {
+  tls_rof(
+    obj@Y, obj@X, obj@noise1, obj@noise2, obj@nsig, obj@df2, plev, 
+    Proj, ...
+  )
+}
+
+#' @export
+tls_rof <- function(Y, X, noise1, noise2, nsig, df2 = NULL, plev = .9, 
+  nsim.CI = 1000, nsim.rcc = 1000, REG = TRUE, rcc.flg = TRUE, seed=NULL, ...) 
+{
   n <- length(Y)
   nx <- ncol(X)
   nn1 <- nrow(noise1)
   nn2 <- nrow(noise2)
   if (is.null(df2)) df2 <- nn2
-  if (length(nsig) != nx) stop("tls.ROF: input nsig length not match input X column number")
+  if (length(nsig) != nx) stop("tls_rof: input nsig length not match input X column number")
   
   C1 <- if (REG) Creg(noise1) else t(noise1) %*% noise1 / nn1
   C12 <- t(in.sqrt.matrix(C1))
@@ -111,7 +121,7 @@ gettlsbeta <- function(X, Y, C12, nsig) {
   beta0 <- rep(NA, ns)
   for (i in 1:ns) beta0[i] <- -v[i] * sqrt(nsig[i]) / v[ns + 1]
 
-  list(u = u, beta = as.matrix(beta0, nrow = nx, ncol = 1))
+  listk(u, beta = as.matrix(beta0, nrow = nx, ncol = 1))
 }
 
 Tresi.simu.TLS <- function(Y, X, C, nsim = 1000, nn1, nn2, nsig, seed=NULL) {
@@ -129,9 +139,16 @@ Tresi.simu.TLS <- function(Y, X, C, nsim = 1000, nn1, nn2, nsig, seed=NULL) {
   beta0 <- as.matrix(-v[1:ns] * sqrt(nsig[1:ns]) / v[ns + 1], ncol = 1, nrow = nx)
   r1.stat <- r2.stat <- rep(NA, nsim)
 
+  pb <- progress::progress_bar$new(
+    format = "TLS simulation [:bar] :percent elapsed: :elapsed",
+    total = nsim, clear = FALSE)
+  
   for (ith in c(1:nsim)) {
+    pb$tick()
+
     Ys <- X %*% beta0 + C12 %*% rnorm(n, 0, 1)
-    Xs <- X + C12 %*% (matrix(rnorm(n * nx), ncol = nx, byrow = T) %*% diag(1 / sqrt(nsig), ncol = nx, nrow = nx))
+    Xs <- X + C12 %*% (matrix(rnorm(n * nx), ncol = nx, byrow = T) %*% 
+      diag(1 / sqrt(nsig), ncol = nx, nrow = nx))
     noise1 <- t(C12 %*% matrix(rnorm(n * nn1, 0, 1), nrow = n, byrow = T))
     noise2 <- t(C12 %*% matrix(rnorm(n * nn2, 0, 1), nrow = n, byrow = T))
     C1hat <- Creg(noise1)

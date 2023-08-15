@@ -16,7 +16,7 @@ setMethod("show", signature(object = "ECOF"), function(object) print(object))
 
 # all the required data will be included in class tls, and corresponding
 # validate function: checkOF() will apply checking rules when claim a
-# new class. Later on, user might use different function: tls.A03 or tls.ROF
+# new class. Later on, user might use different function: tls or tls_rof
 # using tls class as input data, and also parameters for each function.
 checkOF <- function(object) {
   if (length(object@X) == 0) {
@@ -54,7 +54,7 @@ readin <- function(file.obssig, file.noise1, file.noise2) {
   # read from data files and return class of tls
   # sample command lines:
   # x<-readin('obs_sig.txt','noise1.txt','noise2.txt')
-  # x will be input for ols, tls.A03 or tls.ROF
+  # x will be input for ols, tls or tls_rof
   itmp <- try(obssig <- as.matrix(read.table(file.obssig)), T)
   if (inherits(itmp, "try-error")) stop(paste("read file:", file.obssig, "error"))
   Y <- t(t(obssig[1, ]))

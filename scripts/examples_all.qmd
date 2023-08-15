@@ -46,13 +46,13 @@ par(mfrow = c(1, 2))
 plotbetas(o1.ols)
 plotrstat(o1.ols)
 
-o1.tls <- tls.A03(Zr@Y, Zr@X, Zr@noise1, Zr@noise2, nsig = 158)
+o1.tls <- tls(Zr@Y, Zr@X, Zr@noise1, Zr@noise2, nsig = 158)
 par(mfrow = c(1, 2))
 plotbetas(o1.tls)
 plotrstat(o1.tls)
 
 # 运行速度较慢
-o1.rof <- tls.ROF(Zr@Y, Zr@X, Zr@noise1, Zr@noise2, nsig = 158)
+o1.rof <- tls_rof(Zr@Y, Zr@X, Zr@noise1, Zr@noise2, nsig = 158, seed=1)
 str(o1.rof)
 
 par(mfrow = c(1, 2))
@@ -64,14 +64,16 @@ par(mfrow = c(1, 2))
 ## 2. Example 02
 ```{r}
 Z <- readin("ALL_ann_2area_obs_sig.dat", "noise1_05yr_ann_piC_2area.dat", "noise2_05yr_ann_piC_2area.dat")
+
 Z2 <- redECOF(Z, u, 8, 2, timefirst = T)
 o2.ols <- ols(Z2@Y, Z2@X, Z2@noise1, Z2@noise2, nsig = 158)
+
 par(mfrow = c(1, 2))
 plotbetas(o2.ols)
 plotrstat(o2.ols)
 
-o2.tls <- tls.A03(Z2@Y, Z2@X, Z2@noise1, Z2@noise2, nsig = 158)
-o2.rof <- tls.ROF(Z2@Y, Z2@X, Z2@noise1, Z2@noise2, nsig = 158)
+o2.tls <- tls(Z2@Y, Z2@X, Z2@noise1, Z2@noise2, nsig = 158)
+o2.rof <- tls_rof(Z2@Y, Z2@X, Z2@noise1, Z2@noise2, nsig = 158)
 
 ```
 
@@ -87,8 +89,8 @@ plotrstat(o3.ols)
 ```
 
 ```{r}
-o3.tls <- tls.A03(Z3@Y, Z3@X, Z3@noise1, Z3@noise2, nsig = 158)
-o3.rof <- tls.ROF(Z3@Y, Z3@X, Z3@noise1, Z3@noise2, nsig = 158)
+o3.tls <- tls(Z3@Y, Z3@X, Z3@noise1, Z3@noise2, nsig = 158)
+o3.rof <- tls_rof(Z3@Y, Z3@X, Z3@noise1, Z3@noise2, nsig = 158)
 
 Z <- readin("ALL_ann_6area_obs_sig.dat", "noise1_05yr_ann_piC_6area.dat", "noise2_05yr_ann_piC_6area.dat")
 Z6 = redECOF(Z, u, 8, 6, timefirst = T)
@@ -96,7 +98,7 @@ o6.ols <- ols(Z6@Y, Z6@X, Z6@noise1, Z6@noise2, nsig = 158)
 par(mfrow = c(1, 2))
 plotbetas(o6.ols)
 plotrstat(o6.ols)
-o6.tls <- tls.A03(Z6@Y, Z6@X, Z6@noise1, Z6@noise2, nsig = 158)
-o6.rof <- tls.ROF(Z6@Y, Z6@X, Z6@noise1, Z6@noise2, nsig = 158)
+o6.tls <- tls(Z6@Y, Z6@X, Z6@noise1, Z6@noise2, nsig = 158)
+o6.rof <- tls_rof(Z6@Y, Z6@X, Z6@noise1, Z6@noise2, nsig = 158)
 ```
 

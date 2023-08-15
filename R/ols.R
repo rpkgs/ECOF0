@@ -1,8 +1,14 @@
+#' @export
+ols.ECOF <- function(obj, plev = 0.9, Proj = NULL, ...) {
+  ols(obj@Y, obj@X, obj@noise1, obj@noise2, obj@nsig, obj@df2, plev, 
+    Proj = Proj, ...)
+}
+
 # sample command lines:
 # x <- readin('obs_sig.txt','noise1.txt','noise2.txt')
 # o1 <- ols(x@Y,x@X,x@noise1,x@noise2,df2=NULL)
 #' @export
-ols <- function(Y, X, noise1, noise2, nsig, df2 = NULL, plev = .95) {
+ols <- function(Y, X, noise1, noise2, nsig, df2 = NULL, plev = .95, ...) {
   n <- length(Y)
   nx <- ncol(X)
   nn1 <- nrow(noise1)

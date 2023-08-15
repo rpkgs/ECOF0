@@ -13,23 +13,29 @@
 #        beta_hat, beta_up) for every signal
 # sample command lines:
 # x <- readin('obs_sig.txt','noise1.txt','noise2.txt')
-# o1 <- tls.A03(x@Y,x@X,x@noise1,x@noise2,nsig=5,df2=220,REG=TRUE)
+# o1 <- tls(x@Y,x@X,x@noise1,x@noise2,nsig=5,df2=220,REG=TRUE)
+
+
+#' @export
+tls.ECOF <- function(obj, plev = 0.9, Proj = NULL, ...) {
+  tls(obj@Y, obj@X, obj@noise1, obj@noise2, obj@nsig, obj@df2, plev, Proj, ...)
+}
 
 #' @export 
-tls.A03 <- function(Y, X, noise1, noise2, nsig, nsim.CI = 1000, df2 = NULL, REG = FALSE, plev = .9) {
+tls <- function(Y, X, noise1, noise2, nsig, nsim.CI = 1000, df2 = NULL, REG = FALSE, plev = .9, ...) {
   
-  if (missing(Y)) stop("input Y missing in tls.A03")
-  if (missing(X)) stop("input X missing in tls.A03")
-  if (missing(noise1)) stop("input noise1 missing in tls.A03")
-  if (missing(noise2)) stop("input noise2 missing in tls.A03")
-  if (missing(nsig)) stop("input nsig missing in tls.A03")
+  if (missing(Y)) stop("input Y missing in tls")
+  if (missing(X)) stop("input X missing in tls")
+  if (missing(noise1)) stop("input noise1 missing in tls")
+  if (missing(noise2)) stop("input noise2 missing in tls")
+  if (missing(nsig)) stop("input nsig missing in tls")
 
   n <- length(Y)
   nx <- ncol(X)
   nn1 <- nrow(noise1)
   nn2 <- nrow(noise2)
   if (is.null(df2)) df2 <- nn2
-  if (length(nsig) != nx) stop("tls.A03: input nsig length not match input X column number")
+  if (length(nsig) != nx) stop("tls: input nsig length not match input X column number")
   if (REG) C1 <- Creg(noise1) else C1 <- t(noise1) %*% noise1 / nn1
   x <- X
   for (i in 1:nx) x[, i] <- X[, i] * sqrt(nsig[i])
