@@ -1,8 +1,8 @@
+# sample command lines:
+# x <- readin('obs_sig.txt','noise1.txt','noise2.txt')
+# o1 <- ols(x@Y,x@X,x@noise1,x@noise2,df2=NULL)
 #' @export
 ols <- function(Y, X, noise1, noise2, nsig, df2 = NULL, plev = .95) {
-  # sample command lines:
-  # x<-readin('obs_sig.txt','noise1.txt','noise2.txt')
-  # o1<-ols(x@Y,x@X,x@noise1,x@noise2,df2=NULL)
   n <- length(Y)
   nx <- ncol(X)
   nn1 <- nrow(noise1)
@@ -16,6 +16,7 @@ ols <- function(Y, X, noise1, noise2, nsig, df2 = NULL, plev = .95) {
   ev1 <- n1eigen$values
   eof1 <- n1eigen$vector
   p <- eof1
+
   for (i in 1:ncol(p)) p[, i] <- eof1[, i] / max(sqrt(ev1[i]), .00005)
   # calculate second covariance matrix (cn2) from n2
   C2 <- t(noise2) %*% noise2 / nn2

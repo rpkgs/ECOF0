@@ -1,22 +1,23 @@
+# Mandatory input: Y -- n x 1 matrix
+#        X -- n x nx matrix, nx is number of signals
+#        noise1 -- nnoise1 x n matrix, each row of this matrix is one piece of noise
+#        noise2 -- nnoise2 x n matrix, each row of this matrix is one piece of noise
+#        nsig -- vector, length of nx, ensemble size for each signal
+# Optional input:
+#        nsim.CI -- simulation size for confidence interval, default as 1000
+#        df2  --  degree of freedom for noise2, if no input will treat noise2 pieces as
+#                 independent, namely, df2=nnoise2
+#        REG  -- regularization flag, apply regularization on noise1 or not, default as FALSE
+#        plev -- confidence level used in residual check, defaul as 0.9
+# output as matrix (n-nx) rows (corresponding to EOF number), each row contains EOF#, (beta_low,
+#        beta_hat, beta_up) for every signal
+# sample command lines:
+# x <- readin('obs_sig.txt','noise1.txt','noise2.txt')
+# o1 <- tls.A03(x@Y,x@X,x@noise1,x@noise2,nsig=5,df2=220,REG=TRUE)
+
 #' @export 
 tls.A03 <- function(Y, X, noise1, noise2, nsig, nsim.CI = 1000, df2 = NULL, REG = FALSE, plev = .9) {
-  # Mandatory input: Y -- n x 1 matrix
-  #        X -- n x nx matrix, nx is number of signals
-  #        noise1 -- nnoise1 x n matrix, each row of this matrix is one piece of noise
-  #        noise2 -- nnoise2 x n matrix, each row of this matrix is one piece of noise
-  #        nsig -- vector, length of nx, ensemble size for each signal
-  # Optional input:
-  #        nsim.CI -- simulation size for confidence interval, default as 1000
-  #        df2  --  degree of freedom for noise2, if no input will treat noise2 pieces as
-  #                 independent, namely, df2=nnoise2
-  #        REG  -- regularization flag, apply regularization on noise1 or not, default as FALSE
-  #        plev -- confidence level used in residual check, defaul as 0.9
-  # output as matrix (n-nx) rows (corresponding to EOF number), each row contains EOF#, (beta_low,
-  #        beta_hat, beta_up) for every signal
-  # sample command lines:
-  # x<-readin('obs_sig.txt','noise1.txt','noise2.txt')
-  # o1<-tls.A03(x@Y,x@X,x@noise1,x@noise2,nsig=5,df2=220,REG=TRUE)
-
+  
   if (missing(Y)) stop("input Y missing in tls.A03")
   if (missing(X)) stop("input X missing in tls.A03")
   if (missing(noise1)) stop("input noise1 missing in tls.A03")

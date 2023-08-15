@@ -51,7 +51,10 @@ par(mfrow = c(1, 2))
 plotbetas(o1.tls)
 plotrstat(o1.tls)
 
+# 运行速度较慢
 o1.rof <- tls.ROF(Zr@Y, Zr@X, Zr@noise1, Zr@noise2, nsig = 158)
+str(o1.rof)
+
 par(mfrow = c(1, 2))
 # plotbetas(o1.rof)
 # plotrstat(o1.rof)
