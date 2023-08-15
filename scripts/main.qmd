@@ -1,0 +1,99 @@
+## 1. Eample 01
+
+```{r}
+setwd("data-raw/dat")
+getwd()
+```
+
+```{r}
+Z <- readin("ALL_ann_1area_obs_sig.dat", "noise1_05yr_ann_piC_1area.dat", "noise2_05yr_ann_piC_1area.dat")
+
+t = seq(1966, 2005, 5)
+plot(t, Z@Y, ylim = c(-30, 40), type = "l", xlab = "Year", ylab = "Mean Prep Anomaly (mm)")
+par(new = TRUE)
+plot(t, Z@X, type = "l", ylim = c(-30, 40), xlab = "", ylab = "", col = 2, main = "High latitude precipitation")
+legend(1968, 35, legend = c("OBS", "SIG"), col = c(1, 2), lty = c(1, 1))
+```
+
+```{r}
+all_sig = matrix(scan("ALL_ann_1area.dat"), byrow = T, nrow = 158)
+nat_sig = matrix(scan("NAT_ann_1area.dat"), byrow = T, nrow = 59)
+
+matplot(t, t(all_sig), ylim = c(-30, 40), type = "l", lty = 2, xlab = "Year", ylab = "Mean Prep Anomaly (mm)", col = 7)
+par(new = TRUE)
+plot(t, Z@Y, ylim = c(-30, 40), type = "l", xlab = "Year", ylab = "Mean Prep Anomaly (mm)")
+par(new = TRUE)
+plot(t, Z@X, type = "l", ylim = c(-30, 40), xlab = "", ylab = "", col = 2, main = "High latitude precipitation")
+```
+
+```{r}
+matplot(t, t(all_sig), ylim = c(-30, 40), type = "l", lty = 2, xlab = "Year", ylab = "Mean Prep Anomaly (mm)", col = 7)
+par(new = TRUE)
+matplot(t, t(nat_sig), ylim = c(-30, 40), type = "l", lty = 3, xlab = "Year", ylab = "", col = 4)
+par(new = TRUE)
+plot(t, Z@Y, ylim = c(-30, 40), type = "l", xlab = "Year", ylab = "Mean Prep Anomaly (mm)", lwd = 2)
+par(new = TRUE)
+plot(t, Z@X, type = "l", ylim = c(-30, 40), xlab = "", ylab = "", col = 2, main = "High latitude precipitation", lwd = 2)
+
+```
+
+```{r}
+u = redop(8, 1, 6)
+Zr = redECOF(Z, u, 8, 1, timefirst = T)
+
+o1.ols <- ols(Zr@Y, Zr@X, Zr@noise1, Zr@noise2, nsig = 158)
+par(mfrow = c(1, 2))
+plotbetas(o1.ols)
+plotrstat(o1.ols)
+
+o1.tls <- tls.A03(Zr@Y, Zr@X, Zr@noise1, Zr@noise2, nsig = 158)
+par(mfrow = c(1, 2))
+plotbetas(o1.tls)
+plotrstat(o1.tls)
+
+o1.rof <- tls.ROF(Zr@Y, Zr@X, Zr@noise1, Zr@noise2, nsig = 158)
+par(mfrow = c(1, 2))
+# plotbetas(o1.rof)
+# plotrstat(o1.rof)
+```
+
+
+## 2. Example 02
+```{r}
+Z <- readin("ALL_ann_2area_obs_sig.dat", "noise1_05yr_ann_piC_2area.dat", "noise2_05yr_ann_piC_2area.dat")
+Z2 <- redECOF(Z, u, 8, 2, timefirst = T)
+o2.ols <- ols(Z2@Y, Z2@X, Z2@noise1, Z2@noise2, nsig = 158)
+par(mfrow = c(1, 2))
+plotbetas(o2.ols)
+plotrstat(o2.ols)
+
+o2.tls <- tls.A03(Z2@Y, Z2@X, Z2@noise1, Z2@noise2, nsig = 158)
+o2.rof <- tls.ROF(Z2@Y, Z2@X, Z2@noise1, Z2@noise2, nsig = 158)
+
+```
+
+
+## 3. Example 03
+```{r}
+Z <- readin("ALL_ann_3area_obs_sig.dat", "noise1_05yr_ann_piC_3area.dat", "noise2_05yr_ann_piC_3area.dat")
+Z3 = redECOF(Z, u, 8, 3, timefirst = T)
+o3.ols <- ols(Z3@Y, Z3@X, Z3@noise1, Z3@noise2, nsig = 158)
+par(mfrow = c(1, 2))
+plotbetas(o3.ols)
+plotrstat(o3.ols)
+```
+
+```{r}
+o3.tls <- tls.A03(Z3@Y, Z3@X, Z3@noise1, Z3@noise2, nsig = 158)
+o3.rof <- tls.ROF(Z3@Y, Z3@X, Z3@noise1, Z3@noise2, nsig = 158)
+
+Z <- readin("ALL_ann_6area_obs_sig.dat", "noise1_05yr_ann_piC_6area.dat", "noise2_05yr_ann_piC_6area.dat")
+Z6 = redECOF(Z, u, 8, 6, timefirst = T)
+o6.ols <- ols(Z6@Y, Z6@X, Z6@noise1, Z6@noise2, nsig = 158)
+par(mfrow = c(1, 2))
+plotbetas(o6.ols)
+plotrstat(o6.ols)
+o6.tls <- tls.A03(Z6@Y, Z6@X, Z6@noise1, Z6@noise2, nsig = 158)
+o6.rof <- tls.ROF(Z6@Y, Z6@X, Z6@noise1, Z6@noise2, nsig = 158)
+```
+
